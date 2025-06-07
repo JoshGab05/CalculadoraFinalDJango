@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}
+Calculadora Numérica
+{% endblock %}
+
+{% block encabezado %}
+Métodos: Bisección, Newton-Raphson y Newton-Raphson Modificado
+{% endblock %}
+
+{% block contenido %}
+<form method="POST" class="row g-3" id="formularioMetodo">
+    {% csrf_token %}
+
+    <div class="col-12">
+        <label class="form-label">Función f(x):</label>
+        <input type="text" class="form-control" name="funcion" placeholder="Ej: x^3 - 2x + 1" required>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Método:</label>
+        <select name="metodo" class="form-select" id="selectorMetodo" required>
+            <option value="biseccion">Bisección</option>
+            <option value="newton">Newton-Raphson</option>
+            <option value="newton_modificado">Newton-Raphson Modificado</option>
+        </select>
+    </div>
+
+    <div class="col-md-4" id="grupo_x0">
+        <label class="form-label">x₀:</label>
+        <input type="number" step="any" class="form-control" name="x0">
+    </div>
+
+    <div class="col-md-4" id="grupo_a">
+        <label class="form-label">Límite inferior (a):</label>
+        <input type="number" step="any" class="form-control" name="a">
+    </div>
+
+    <div class="col-md-4" id="grupo_b">
+        <label class="form-label">Límite superior (b):</label>
+        <input type="number" step="any" class="form-control" name="b">
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Iteraciones:</label>
+        <input type="number" class="form-control" name="iteraciones" value="10">
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary mt-3">Calcular</button>
+    </div>
+</form>
+
+<script>
+    const selector = document.getElementById("selectorMetodo");
+    const grupo_x0 = document.getElementById("grupo_x0");
+    const grupo_a = document.getElementById("grupo_a");
+    const grupo_b = document.getElementById("grupo_b");
+
+    function actualizarCampos() {
+        const metodo = selector.value;
+        grupo_x0.style.display = (metodo === "newton" || metodo === "newton_modificado") ? "block" : "none";
+        grupo_a.style.display = (metodo === "biseccion") ? "block" : "none";
+        grupo_b.style.display = (metodo === "biseccion") ? "block" : "none";
+    }
+
+    selector.addEventListener("change", actualizarCampos);
+    document.addEventListener("DOMContentLoaded", actualizarCampos);
+</script>
+
+{% if mensaje_error %}
+    <div class="alert alert-danger mt-4">
+        <strong>{{ mensaje_error }}</strong>
+    </div>
+{% endif %}
+
+{% if resultado %}
+    <div class="alert alert-success mt-4">
+        <strong>Resultado final:</strong> {{ resultado }}
+    </div>
+{% endif %}
+
+{% if tabla_iteraciones %}
+    <h3 class="mt-4">Tabla de Iteraciones</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    {% for encabezado in tabla_iteraciones.0.keys %}
+                        <th>{{ encabezado|title }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for fila in tabla_iteraciones %}
+                    <tr>
+                        {% for valor in fila.values %}
+                            <td>{{ valor }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+
+{% if imagen_grafica %}
+    <h3 class="mt-4">Gráfica de la función</h3>
+    <img src="{% static imagen_grafica %}" class="img-fluid" alt="Gráfica de la función">
+{% endif %}
+{% endblock %}
