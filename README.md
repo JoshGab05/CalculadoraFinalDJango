@@ -38,18 +38,3 @@ python manage.py runserver
 5. Abre tu navegador en:
 http://127.0.0.1:8000
 
-Esta debe ser la estructura del proyecto que debes tener para poder utilizarla
-CalculadoraDJangoFinal/
-├── operaciones/
-│   ├── views.py
-│   ├── metodos/
-│   │   ├── biseccion.py
-│   │   ├── newton.py
-│   │   └── newton_modificado.py
-│   ├── graficas.py
-├── templates/
-│   └── calculadora_nueva.html
-├── static/
-│   └── graficas/
-├── manage.py
-
