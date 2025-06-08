@@ -22,7 +22,7 @@ Antes que nada debes tener instalado Visual Stude Code, allí es donde cargarás
 
 1. Clona este repositorio:
 
-git clone https://github.com/JoshGab05/CalculadoraRaicesDjango.git
+git clone https://github.com/JoshGab05/CalculadoraFinalDjango.git
 cd CalculadoraRaicesDjango
 
 2. Crea y activa un entorno virtual:
